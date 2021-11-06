@@ -55,6 +55,7 @@ public class Library implements books {
 
     @Override
     public int remove_book(String query) {  //removes only first book with matching query
+       boolean book_deleted = false;
         for (int i = 0; Books.size() > i; i++) {
      /*     if(Books.get(i).get(0).equals(query)){
               System.out.println("Book has been removed, Details-> "+ Books.get(i));
@@ -65,15 +66,18 @@ public class Library implements books {
                 System.out.println("Book has been removed, Details-> "+ Books.get(i));
                JOptionPane.showMessageDialog(null,"Books Deleted. "+ Books.get(i).get(1) );
                 Books.remove(i);
+              book_deleted = true;
                 return 0;
             }
           if(Books.get(i).get(2).equals(query)){
               System.out.println("Book has been removed, Details-> "+ Books.get(i));
               JOptionPane.showMessageDialog(null,"Books Deleted. " + Books.get(i).get(1));
                 Books.remove(i);
+              book_deleted = true;
                 return 0;
             }
         }
+        JOptionPane.showMessageDialog(null,"Book not found!");
         System.out.println("Book not found.");
         return 0;
 
@@ -222,7 +226,7 @@ public class Library implements books {
     @Override
     public int books_sort_by(String sortby) { //collection and sorting, lamda function
       String sortn=  sortby.toLowerCase();
-        if(sortn.equals("name")){
+       try{ if(sortn.equals("name")){
             Collections.sort(Books, (o1, o2) -> o1.get(1).compareTo(o2.get(1)));
             return 0;
         }
@@ -234,20 +238,26 @@ public class Library implements books {
             Collections.sort(Books, (o1, o2) -> o1.get(2).compareTo(o2.get(2)));
             return 0;
         }
-        System.out.println("You can sort books by: id,name, author");
-        return 0;
+            JOptionPane.showMessageDialog(null, "Books are sorted.");
 
-    } public void books_sort_by_interface(){
-        JTextField name = new JTextField();
+           return 0;
+       }catch(Exception e) {
+           JOptionPane.showMessageDialog(null, "You can sort books by: id,name, author only.");
+           System.out.println("You can sort books by: id,name, author");
+           return 0;
+       }
+    }
+    public void books_sort_by_interface(){
+        JTextField name1 = new JTextField();
 
         Object[] message = {
-                "Enter Key[name or author]:", name,
+                "Enter Key[name or author]:", name1,
         };
 
         int option = JOptionPane.showConfirmDialog(null, message, "Sort Books", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            books_sort_by(name.getText());
-            JOptionPane.showMessageDialog(null,"Books Sorted." );
+            books_sort_by(name1.getText());
+          JOptionPane.showMessageDialog(null,"Books Sorted." );
         }
         else {
             System.out.println("failed to sort.");
